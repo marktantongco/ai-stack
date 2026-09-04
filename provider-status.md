@@ -121,3 +121,43 @@
 ---
 
 *This document is auto-generated. Run `curl localhost:18080/healthz` and `curl localhost:31000/health` for real-time status.*
+
+---
+
+## ✅ Infrastructure — Live
+
+| Service | Status |
+|---|---|
+| **GitLab** | ✅ LIVE — 20 projects, mark.tantongco |
+| **Webshare Proxies** | ✅ LIVE — 2/2 tested 200 |
+| **GitHub Pages** | ✅ LIVE — updated content |
+| **Freebuff** | ✅ Active |
+| **AutoClaw** | ✅ Active (6 models, 0 accounts) |
+
+## ❌ Permanently Dead (v3.7.2)
+
+| Provider | Reason |
+|---|---|
+| NVIDIA | 404/410 Gone |
+| Mistral | 429 rate limit |
+| SiliconFlow | Invalid key |
+| All Groq keys | 404 |
+| OpenAI (HLQJ, MARKTANTONGCO) | No credits (429) |
+| Grok/xAI | Permission denied (no team credits) |
+| Morph | Empty response |
+| BrowseAI | Empty response |
+| CLIAgents | Empty response |
+| BrowserUse | Empty response |
+| Bright Data | Wrong endpoint |
+| ElevenLabs | 0 voices |
+
+## 📝 Final Summary
+
+- **Live inference providers: 7** (Cloudflare, OpenRouter, Fireworks, Gemini, Cohere, Groq-direct, Ollama)
+- **Live infra: 2** (GitLab, Webshare proxies)
+- **Total verified keys in cloud: 143**
+- **Permanently blocked: 14 providers**
+- **Wallet-gated: 11 providers**
+- **AutoClaw accounts: 0** (needs Z.ai login credentials)
+
+*Last updated: 2026-09-04*
