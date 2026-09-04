@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Stack — Self-Hosted Local AI Agent Infrastructure</title>
+<meta name="description" content="Self-hosted AI agent stack: stealth HTTPS proxy, OpenAI-compatible GLM gateway, multi-provider token cloud and opencode integration.">
+<style>body{font-family:system-ui,sans-serif;max-width:720px;margin:3rem auto;padding:0 1rem;line-height:1.6}code{background:#f1f1f1;padding:.1rem .3rem;border-radius:4px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:.4rem .6rem;text-align:left}</style>
+</head>
+<body>
+<h1>AI Stack</h1>
+<p>Self-hosted, privacy-first <strong>local AI agent infrastructure</strong>: stealth proxying, an OpenAI-compatible <strong>GLM gateway</strong>, centralized <strong>token cloud</strong>, and <strong>opencode</strong> integration.</p>
+<h2>Services</h2>
+<table>
+<tr><th>Service</th><th>Address</th><th>Notes</th></tr>
+<tr><td>Freebuff gateway</td><td><code>:18080</code></td><td>circuit breaker, rate limiter, US proxies</td></tr>
+<tr><td>AutoClaw proxy</td><td><code>:31000</code></td><td>OpenAI-compatible GLM/Z.ai, rotating proxies</td></tr>
+<tr><td>Stealth proxy (Rust)</td><td><code>:443</code></td><td>auto-TLS, nginx camouflage</td></tr>
+<tr><td>opencode models</td><td><code>autoclaw/glm-5.2</code></td><td>free GLM once logged in</td></tr>
+</table>
+<h2>Quickstart</h2>
+<pre><code>opencode run --model autoclaw/glm-5-turbo "hello"</code></pre>
+<p>Full docs in <a href="https://github.com/marktantongco/ai-stack">README.md</a>. No credentials are stored in this repo.</p>
+</body>
+</html>
