@@ -11,7 +11,10 @@
 
 Code words below (`endpoint`, `sidecar`, `passthrough`, `SSE`, `sealed`)
 keep exact coding meaning. Sentences stay short so learning never stops.
-Live provider facts live in [`provider-status.md`](provider-status.md).
+Live provider facts live in [`provider-status.md`](provider-status.md) —
+**generated**, not hand-edited: edit [`status/providers.yaml`](status/providers.yaml)
+and run `scripts/gen-status.py` (next to a live gateway it overlays `/health/all`
+results and stamps `last_verified`; `--offline` elsewhere; CI runs `--check`).
 
 ---
 
@@ -50,6 +53,7 @@ flowchart TB
 | Port | Name | Job |
 |------|------|-----|
 | `:18080` | Gateway | 🟢 **front door** — chat, evals, leaderboard, health |
+| `:18090` | semcache | 🧠 semantic response cache in front of the gateway (optional sidecar) |
 | `:9091` | Dashboard | 🖥️ control room UI + SSE |
 | `:3101` | Hermes | 🥷 stealth TLS fingerprints + SOCKS5 pool |
 | `:3103` | LMArena | ⚔️ arena session relay |
@@ -175,6 +179,11 @@ scripts/operations/secret-audit.sh  # env diff vs backups
 scripts/operations/runbook.sh list  # 6 incident runbooks
 ```
 
+This repo's own CI (`ci/github-workflow-ci.yml` — move to `.github/workflows/`, see `ci/README.md`) lints `install.sh`, asserts the
+`--verify-only` failure path exits 2, and fails on stale status files.
+`install.sh` pins the gateway to a commit (`AI_STACK_GATEWAY_REF` to override)
+and honours `AI_STACK_GATEWAY_DIR`.
+
 Full runbooks + 7 architecture decision records + roadmap live with the
 gateway repo (`docs/`, `scripts/`). CI runs build, vet, `go test -race`
 (95 pass), smoke on every push.
@@ -193,6 +202,13 @@ gateway repo (`docs/`, `scripts/`). CI runs build, vet, `go test -race`
   ([repo](https://github.com/marktantongco/unified-owl))
 - **Token cloud** — Centralized `chmod 600` key store, each key
   live-validated. See `provider-status.md` for the full 143-key report.
+
+## Gap-closing components in this repo
+
+| Path | Closes | State |
+|---|---|---|
+| `sidecars/semcache/` | semantic cache (Bifrost/LiteLLM class) — fewer calls to 429-prone free providers | ✅ runnable, 13 tests |
+| `gateway-patches/plugin-seam/` | Bifrost-style Pre/Post plugin chain for the Go gateway + `ledger` (per-key spend/budget) + `keypool` (per-provider key rotation on 429/402) plugins + fiber adapter | 📦 ready to copy into `unified-freebuff-proxy` (see its README) |
 
 ## Security notes
 

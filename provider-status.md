@@ -1,163 +1,56 @@
-# Freebuff AI Provider Status — Live Report
+# AI Stack — Provider & Infrastructure Status
 
-**Generated:** 2026-09-04 UTC  
-**Token cloud:** v3.7, 143 keys  
-**Infrastructure:** Both services active, Pages live
+**Generated:** 2026-09-15T00:00:00Z  
+**Source:** `scripts/gen-status.py` (`status/providers.yaml`)  
+**Do not edit by hand** — edit `status/providers.yaml` and re-run the generator.
 
----
+## Truth table
 
-## ✅ Live Inference (Confirmed Working)
+| Kind | Name | State | Detail | Last verified | Source |
+|---|---|---|---|---|---|
+| provider | **Cloudflare Workers AI** | ✅ LIVE | llama-3.1-8b-fast/fp8, llama-3.2-1b/3b, llama-4-scout, mistral-small-3.1 (llama-3.1-8b-instruct deprecated 2026-05-30) | `2026-09-04T00:00:00Z` | manual |
+| provider | **OpenRouter** | ✅ LIVE | llama-3.1-8b-instruct confirmed, 359+ models | `2026-09-04T00:00:00Z` | manual |
+| provider | **Fireworks** | ✅ LIVE | deepseek-v4-flash confirmed, 19 models | `2026-09-04T00:00:00Z` | manual |
+| provider | **Google Gemini** | ✅ LIVE | gemini-2.5-flash confirmed, 3 verified keys (key 5 transient 503, key 7 empty) | `2026-09-04T00:00:00Z` | manual |
+| provider | **Cohere** | ✅ LIVE | command-a-03-2025 confirmed, 8+ models | `2026-09-04T00:00:00Z` | manual |
+| provider | **Ollama (local)** | ✅ LIVE | qwen2.5:3b, gemma4:e2b, deepseek-r1:1.5b, nomic-embed-text | `2026-09-04T00:00:00Z` | manual |
+| provider | **Groq** | ❌ BLOCKED | CONFLICT RESOLVED — v3.7 said 16 models live, v3.7.2 said all keys 404; later report wins. Re-verify. | `2026-09-04T00:00:00Z` | manual |
+| provider | **Together** | ⚠️ WALLET-GATED | key valid, "Credit limit exceeded" | `2026-09-04T00:00:00Z` | manual |
+| provider | **DeepSeek** | ⚠️ WALLET-GATED | 4 keys valid, $0.00 balance | `2026-09-04T00:00:00Z` | manual |
+| provider | **Cerebras** | ⚠️ WALLET-GATED | key valid, empty wallet | `2026-09-04T00:00:00Z` | manual |
+| provider | **OpenAI** | ⚠️ WALLET-GATED | sk-proj key valid, no credits (429) | `2026-09-04T00:00:00Z` | manual |
+| provider | **Venice** | ⚠️ WALLET-GATED | key valid, empty wallet | `2026-09-04T00:00:00Z` | manual |
+| provider | **xAI / Grok** | ⚠️ WALLET-GATED | key valid, team has no credits (permission denied) | `2026-09-04T00:00:00Z` | manual |
+| provider | **ZenMux** | ⚠️ WALLET-GATED | key valid, 402 no credit | `2026-09-04T00:00:00Z` | manual |
+| provider | **MiniMax** | ❌ BLOCKED | 1008 account blocked | `2026-09-04T00:00:00Z` | manual |
+| provider | **Moonshot** | ❌ BLOCKED | account blocked | `2026-09-04T00:00:00Z` | manual |
+| provider | **NVIDIA** | ❌ BLOCKED | all slugs 404/410 Gone, catalog dead — stop probing | `2026-09-04T00:00:00Z` | manual |
+| provider | **Mistral** | ❌ BLOCKED | 5th consecutive 429, not recovering — stop probing | `2026-09-04T00:00:00Z` | manual |
+| provider | **SiliconFlow** | ❌ BLOCKED | invalid key | `2026-09-04T00:00:00Z` | manual |
+| provider | **Morph / BrowseAI / CLIAgents / BrowserUse** | ❌ BLOCKED | empty responses | `2026-09-04T00:00:00Z` | manual |
+| provider | **Bright Data** | ❌ BLOCKED | wrong endpoint | `2026-09-04T00:00:00Z` | manual |
+| provider | **ElevenLabs** | ❌ BLOCKED | 0 voices | `2026-09-04T00:00:00Z` | manual |
+| infra | **freebuff-unified gateway :18080** | ✅ LIVE | systemd active | `2026-09-04T00:00:00Z` | manual |
+| infra | **hermes sidecar :3101** | ✅ LIVE | TLS 1.3 / HTTP2 stealth fetch | `2026-09-04T00:00:00Z` | manual |
+| infra | **lmarena sidecar :3103** | ✅ LIVE | arena sessions + eval relay | `2026-09-04T00:00:00Z` | manual |
+| infra | **owl-agent :60000** | ✅ LIVE | proxy defense, chameleon fingerprints, MCP fetch | `2026-09-04T00:00:00Z` | manual |
+| infra | **owl metrics :9101** | ✅ LIVE | Prometheus, 55 proxies | `2026-09-04T00:00:00Z` | manual |
+| infra | **semcache sidecar :18090** | ❔ UNKNOWN | semantic cache (sidecars/semcache) — enable with systemctl --user; optional | `2026-09-15T00:00:00Z` | manual |
+| infra | **AutoClaw proxy :31000** | ⚠️ WALLET-GATED | active, 6 models, 0 accounts (needs Z.ai email:password batch login) | `2026-09-04T00:00:00Z` | manual |
+| infra | **GitHub Pages** | ✅ LIVE | marktantongco.github.io/ai-stack — build status "built" | `2026-09-15T00:00:00Z` | manual |
+| infra | **Vercel** | ⚠️ WALLET-GATED | 302 SSO-gated — disable Deployment Protection for a public URL | `2026-09-04T00:00:00Z` | manual |
+| infra | **Rust stealth proxy :443** | ❔ UNKNOWN | binary built, stealth-tested; not launched (needs domain + ACME email) | `2026-09-04T00:00:00Z` | manual |
+| infra | **Token cloud** | ✅ LIVE | v3.7, 143 keys, chmod 600 | `2026-09-04T00:00:00Z` | manual |
+| infra | **GitLab** | ✅ LIVE | 20 projects | `2026-09-04T00:00:00Z` | manual |
+| infra | **Webshare proxies** | ✅ LIVE | 2/2 tested 200 | `2026-09-04T00:00:00Z` | manual |
 
-### 1. Cloudflare Workers AI (CFUT key verified)
-| Model | Status |
+## Summary
+
+| State | Count |
 |---|---|
-| `@cf/meta/llama-3.1-8b-instruct-fast` | ✅ Inference OK |
-| `@cf/meta/llama-3.1-8b-instruct-fp8` | ✅ 200 |
-| `@cf/meta/llama-3.2-3b-instruct` | ✅ 200 |
-| `@cf/meta/llama-3.2-1b-instruct` | ✅ 200 |
-| `@cf/meta/llama-4-scout-17b-16e-instruct` | ✅ 200 |
-| `@cf/meta/llama-3.3-70b-instruct-fp8-fast` | ✅ Batch |
-| `@cf/mistralai/mistral-small-3.1-24b-instruct` | ✅ 200 |
-| `@cf/deepseek-ai/deepseek-v4-flash-0731` | ⚠️ 403 paid |
-| `@cf/meta/llama-3.1-8b-instruct` | ❌ Deprecated 2026-05-30 |
+| ✅ LIVE | 15 |
+| ⚠️ WALLET-GATED | 9 |
+| ❌ BLOCKED | 9 |
+| ❔ UNKNOWN | 2 |
 
-### 2. OpenRouter
-- `llama-3.1-8b-instruct` — ✅ Live inference confirmed
-- 359+ models available
-
-### 3. Fireworks
-- `deepseek-v4-flash` — ✅ Live inference confirmed
-- 19 models available
-
-### 4. Google Gemini
-- `gemini-2.5-flash` — ✅ Live inference confirmed
-- 38+ models available
-- 3 verified keys (key 5 = transient 503, key 7 = empty response)
-
-### 5. Cohere
-- `command-a-03-2025` — ✅ Live inference confirmed
-- 8+ models available
-
-### 6. Groq (Direct API)
-- 16 models available, direct inference confirmed
-
-### 7. Local Ollama
-- `qwen2.5:3b` — ✅ Working
-- `gemma4:e2b` — ✅ Working
-- `deepseek-r1:1.5b` — ✅ Working
-- `nomic-embed-text` — ✅ Working
-
----
-
-## ⚠️ Valid Key, Wallet-Gated (Needs Credits)
-
-| Provider | Key Status | Issue |
-|---|---|---|
-| Together | `tgp_v1_...` valid | "Credit limit exceeded" |
-| DeepSeek | 4 keys, $0.00 | Empty wallet |
-| Cerebras | Valid | Empty wallet |
-| OpenAI | `sk-proj-oLDW...` | No credits |
-| Venice | Valid | Empty wallet |
-| MiniMax | 1008 | Account blocked |
-| Moonshot | Blocked | Account blocked |
-| xAI/Grok | Valid | Team has no credits |
-| ZenMux | Valid | 402 no-credit |
-
----
-
-## ❌ Permanently Blocked
-
-| Provider | Reason |
-|---|---|
-| **NVIDIA** | All slugs 404/410 Gone, catalog dead |
-| **Mistral** | 5th consecutive 429 rate limit, not recovering |
-
----
-
-## 📊 Summary
-
-| Category | Count |
-|---|---|
-| **Live inference providers** | **7** (Cloudflare, OpenRouter, Fireworks, Gemini, Cohere, Groq, Ollama) |
-| **Valid but wallet-gated** | **9** |
-| **Permanently blocked** | **2** (Mistral, NVIDIA) |
-| Total keys in cloud | 143 |
-| Active AutoClaw accounts | 0 |
-
----
-
-## 🔧 Infrastructure Status
-
-| Component | Status |
-|---|---|
-| `freebuff-unified` | ✅ Active `:18080`, 27h+ uptime |
-| `autoclaw-proxy` | ✅ Active `:31000`, 0 accounts |
-| GitHub Pages | ✅ 200 |
-| Vercel | ⚠️ 302 (SSO gated) |
-| Rust proxy | ✅ Built, stealth-tested |
-| Token cloud | ✅ v3.7, 428 lines |
-| Cloudflare model rename | ✅ Fixed (deprecated → fast/fp8 variants) |
-
----
-
-## 📝 Remaining Action Items
-
-### Immediate (paste-and-go)
-1. **GLM-5.2 in opencode** — paste `email:password` → AutoClaw batch login
-2. **Paid gateway** — paste 2 real tokens → swap into Freebuff config
-3. **Public Rust proxy** — give domain + admin email → ACME + 443 launch
-
-### Wallet top-ups
-4. **Together** — add credits (key works, just empty)
-5. **DeepSeek ×4** — add credits
-6. **Cerebras / OpenAI / Venice / xAI / ZenMux** — add credits
-
-### Configuration
-7. **Vercel** — disable Deployment Protection → public URL
-8. **Cloudflare** — replace `@cf/meta/llama-3.1-8b-instruct` with `@cf/meta/llama-3.1-8b-instruct-fast` in any configs
-9. **NVIDIA** — mark permanently blocked, stop probing
-10. **Mistral** — mark permanently blocked, stop probing
-
----
-
-*This document is auto-generated. Run `curl localhost:18080/healthz` and `curl localhost:31000/health` for real-time status.*
-
----
-
-## ✅ Infrastructure — Live
-
-| Service | Status |
-|---|---|
-| **GitLab** | ✅ LIVE — 20 projects, mark.tantongco |
-| **Webshare Proxies** | ✅ LIVE — 2/2 tested 200 |
-| **GitHub Pages** | ✅ LIVE — updated content |
-| **Freebuff** | ✅ Active |
-| **AutoClaw** | ✅ Active (6 models, 0 accounts) |
-
-## ❌ Permanently Dead (v3.7.2)
-
-| Provider | Reason |
-|---|---|
-| NVIDIA | 404/410 Gone |
-| Mistral | 429 rate limit |
-| SiliconFlow | Invalid key |
-| All Groq keys | 404 |
-| OpenAI (HLQJ, MARKTANTONGCO) | No credits (429) |
-| Grok/xAI | Permission denied (no team credits) |
-| Morph | Empty response |
-| BrowseAI | Empty response |
-| CLIAgents | Empty response |
-| BrowserUse | Empty response |
-| Bright Data | Wrong endpoint |
-| ElevenLabs | 0 voices |
-
-## 📝 Final Summary
-
-- **Live inference providers: 7** (Cloudflare, OpenRouter, Fireworks, Gemini, Cohere, Groq-direct, Ollama)
-- **Live infra: 2** (GitLab, Webshare proxies)
-- **Total verified keys in cloud: 143**
-- **Permanently blocked: 14 providers**
-- **Wallet-gated: 11 providers**
-- **AutoClaw accounts: 0** (needs Z.ai login credentials)
-
-*Last updated: 2026-09-04*
+Rows whose **Source** is `gateway /health/all` are refreshed on every run; the rest are curated facts (wallet balances, account blocks) that no probe can see.

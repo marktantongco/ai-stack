@@ -1,0 +1,233 @@
+# Single source of truth for provider-status.md + index.html.
+# Edit THIS file, then run: scripts/gen-status.py --offline   (or without --offline next to a live gateway)
+#
+# Fields:
+#   kind           provider | infra
+#   name           display name
+#   state          live | wallet | blocked | down | unknown
+#   detail         one-line human fact
+#   last_verified  ISO-8601 UTC of the last time a human/probe confirmed `state`
+#   source         manual | gateway /health/all  (gateway rows are overwritten on each live run)
+#   probe          (optional) key in /health/all "results" that owns this row
+#
+# Flat "- key: value" blocks only — the generator's YAML parser is deliberately tiny.
+
+# ---------------------------------------------------------------- inference providers
+- kind: provider
+  name: Cloudflare Workers AI
+  state: live
+  detail: llama-3.1-8b-fast/fp8, llama-3.2-1b/3b, llama-4-scout, mistral-small-3.1 (llama-3.1-8b-instruct deprecated 2026-05-30)
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: OpenRouter
+  state: live
+  detail: llama-3.1-8b-instruct confirmed, 359+ models
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: Fireworks
+  state: live
+  detail: deepseek-v4-flash confirmed, 19 models
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: Google Gemini
+  state: live
+  detail: gemini-2.5-flash confirmed, 3 verified keys (key 5 transient 503, key 7 empty)
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: Cohere
+  state: live
+  detail: command-a-03-2025 confirmed, 8+ models
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: Ollama (local)
+  state: live
+  detail: qwen2.5:3b, gemma4:e2b, deepseek-r1:1.5b, nomic-embed-text
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+  probe: ollama
+- kind: provider
+  name: Groq
+  state: blocked
+  detail: CONFLICT RESOLVED — v3.7 said 16 models live, v3.7.2 said all keys 404; later report wins. Re-verify.
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: Together
+  state: wallet
+  detail: key valid, "Credit limit exceeded"
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: DeepSeek
+  state: wallet
+  detail: 4 keys valid, $0.00 balance
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: Cerebras
+  state: wallet
+  detail: key valid, empty wallet
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: OpenAI
+  state: wallet
+  detail: sk-proj key valid, no credits (429)
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: Venice
+  state: wallet
+  detail: key valid, empty wallet
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: xAI / Grok
+  state: wallet
+  detail: key valid, team has no credits (permission denied)
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: ZenMux
+  state: wallet
+  detail: key valid, 402 no credit
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: MiniMax
+  state: blocked
+  detail: 1008 account blocked
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: Moonshot
+  state: blocked
+  detail: account blocked
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: NVIDIA
+  state: blocked
+  detail: all slugs 404/410 Gone, catalog dead — stop probing
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: Mistral
+  state: blocked
+  detail: 5th consecutive 429, not recovering — stop probing
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: SiliconFlow
+  state: blocked
+  detail: invalid key
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: Morph / BrowseAI / CLIAgents / BrowserUse
+  state: blocked
+  detail: empty responses
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: Bright Data
+  state: blocked
+  detail: wrong endpoint
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: provider
+  name: ElevenLabs
+  state: blocked
+  detail: 0 voices
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+
+# ---------------------------------------------------------------- infrastructure (gateway-probed where `probe` set)
+- kind: infra
+  name: freebuff-unified gateway :18080
+  state: live
+  detail: systemd active
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+  probe: freebuff-unified
+- kind: infra
+  name: hermes sidecar :3101
+  state: live
+  detail: TLS 1.3 / HTTP2 stealth fetch
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+  probe: hermes-sidecar
+- kind: infra
+  name: lmarena sidecar :3103
+  state: live
+  detail: arena sessions + eval relay
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+  probe: lmarena-sidecar
+- kind: infra
+  name: owl-agent :60000
+  state: live
+  detail: proxy defense, chameleon fingerprints, MCP fetch
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+  probe: owl-agent
+- kind: infra
+  name: owl metrics :9101
+  state: live
+  detail: Prometheus, 55 proxies
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+  probe: owl-agent metrics
+- kind: infra
+  name: semcache sidecar :18090
+  state: unknown
+  detail: semantic cache (sidecars/semcache) — enable with systemctl --user; optional
+  last_verified: 2026-09-15T00:00:00Z
+  source: manual
+- kind: infra
+  name: AutoClaw proxy :31000
+  state: wallet
+  detail: active, 6 models, 0 accounts (needs Z.ai email:password batch login)
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: infra
+  name: GitHub Pages
+  state: live
+  detail: marktantongco.github.io/ai-stack — build status "built"
+  last_verified: 2026-09-15T00:00:00Z
+  source: manual
+- kind: infra
+  name: Vercel
+  state: wallet
+  detail: 302 SSO-gated — disable Deployment Protection for a public URL
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: infra
+  name: Rust stealth proxy :443
+  state: unknown
+  detail: binary built, stealth-tested; not launched (needs domain + ACME email)
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: infra
+  name: Token cloud
+  state: live
+  detail: v3.7, 143 keys, chmod 600
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: infra
+  name: GitLab
+  state: live
+  detail: 20 projects
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual
+- kind: infra
+  name: Webshare proxies
+  state: live
+  detail: 2/2 tested 200
+  last_verified: 2026-09-04T00:00:00Z
+  source: manual

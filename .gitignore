@@ -1,0 +1,16 @@
+# secrets — never commit
+config.yaml
+*.env
+.env*
+tokens.json
+accounts.txt
+proxies.txt
+*.key
+*.pem
+
+# local state
+.venv/
+__pycache__/
+*.log
+failover-status.json
+node_modules/
