@@ -11,7 +11,10 @@
 
 Code words below (`endpoint`, `sidecar`, `passthrough`, `SSE`, `sealed`)
 keep exact coding meaning. Sentences stay short so learning never stops.
-Live provider facts live in [`provider-status.md`](provider-status.md).
+Live provider facts live in [`provider-status.md`](provider-status.md) —
+**generated**, not hand-edited: edit [`status/providers.yaml`](status/providers.yaml)
+and run `scripts/gen-status.py` (next to a live gateway it overlays `/health/all`
+results and stamps `last_verified`; `--offline` elsewhere; CI runs `--check`).
 
 ---
 
@@ -174,6 +177,11 @@ scripts/operations/restart-prod.sh  # safe restart with pre/post smoke
 scripts/operations/secret-audit.sh  # env diff vs backups
 scripts/operations/runbook.sh list  # 6 incident runbooks
 ```
+
+This repo's own CI (`.github/workflows/ci.yml`) lints `install.sh`, asserts the
+`--verify-only` failure path exits 2, and fails on stale status files.
+`install.sh` pins the gateway to a commit (`AI_STACK_GATEWAY_REF` to override)
+and honours `AI_STACK_GATEWAY_DIR`.
 
 Full runbooks + 7 architecture decision records + roadmap live with the
 gateway repo (`docs/`, `scripts/`). CI runs build, vet, `go test -race`

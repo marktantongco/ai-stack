@@ -15,6 +15,10 @@
 #   --skip-owl    gateway only (skip owl-agent install/verify)
 #   --verify-only probe live endpoints, change nothing
 #
+# Env:
+#   AI_STACK_GATEWAY_DIR  gateway checkout dir (default ~/workspace/freebuff-unified)
+#   AI_STACK_GATEWAY_REF  gateway git ref to install (default: pinned commit below)
+#
 # Secrets: never written. Gateway config.yaml keeps CHANGE_ME placeholders
 # until you fill keys, then `sudo systemctl restart freebuff-unified`.
 # Exit codes: 0 ok, 1 usage/error, 2 verify failed.
@@ -39,7 +43,7 @@ while [ $# -gt 0 ]; do
     --yes) YES=1; shift ;;
     --skip-owl) SKIP_OWL=1; shift ;;
     --verify-only) VERIFY_ONLY=1; shift ;;
-    -h|--help) sed -n '2,20p' "$0" | sed 's/^# \?//'; exit 0 ;;
+    -h|--help) sed -n '2,24p' "$0" | sed 's/^# \?//'; exit 0 ;;
     *) die "unknown flag: $1 (see --help)" ;;
   esac
 done
@@ -48,8 +52,11 @@ YESFLAG=""; [ "$YES" -eq 1 ] && YESFLAG="--yes"
 for dep in curl git; do command -v "$dep" >/dev/null 2>&1 || die "missing dependency: $dep"; done
 
 GATEWAY_REPO="https://github.com/marktantongco/unified-freebuff-proxy.git"
-GATEWAY_DIR="$HOME/workspace/freebuff-unified"
-if [ -d /home/x3/freebuff-unified/.git ]; then GATEWAY_DIR="/home/x3/freebuff-unified"; fi
+# Pinned upstream commit: a push to unified-freebuff-proxy/main can no longer break this
+# installer silently. Bump deliberately: AI_STACK_GATEWAY_REF=main ./install.sh  (or edit here).
+GATEWAY_REF="${AI_STACK_GATEWAY_REF:-9618530081c4342593b1e7113633b6bf180e4a60}"   # 2026-09-14
+# Gateway checkout dir: override with AI_STACK_GATEWAY_DIR (no machine-specific paths here).
+GATEWAY_DIR="${AI_STACK_GATEWAY_DIR:-$HOME/workspace/freebuff-unified}"
 
 probe() { # path expect [bearer]
   local code
@@ -62,6 +69,11 @@ step "1/3 gateway (delegates to canonical installer)"
 if [ "$VERIFY_ONLY" -eq 0 ]; then
   if [ ! -d "$GATEWAY_DIR/.git" ]; then
     git clone "$GATEWAY_REPO" "$GATEWAY_DIR" || die "clone failed (offline?)"
+  fi
+  if [ "$GATEWAY_REF" != "main" ]; then
+    git -C "$GATEWAY_DIR" fetch -q origin "$GATEWAY_REF" 2>/dev/null || git -C "$GATEWAY_DIR" fetch -q origin
+    git -C "$GATEWAY_DIR" checkout -q --detach "$GATEWAY_REF" || die "cannot check out pinned gateway ref $GATEWAY_REF"
+    info "gateway pinned at ${GATEWAY_REF:0:12}"
   fi
   if [ -x "$GATEWAY_DIR/scripts/install-omarchy.sh" ]; then
     "$GATEWAY_DIR/scripts/install-omarchy.sh" $YESFLAG --repo-dir "$GATEWAY_DIR" \

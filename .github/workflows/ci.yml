@@ -1,0 +1,16 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get install -y shellcheck
+      - name: lint
+        run: bash -n install.sh && shellcheck -S warning install.sh && python3 -m py_compile scripts/gen-status.py
+      - name: verify-only must exit 2 when no gateway is running
+        run: |
+          set +e; ./install.sh --verify-only --skip-owl; rc=$?; set -e
+          test "$rc" -eq 2 || { echo "expected exit 2, got $rc"; exit 1; }
+      - name: status files are generated, not hand-edited
+        run: scripts/gen-status.py --check
