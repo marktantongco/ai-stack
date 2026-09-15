@@ -31,6 +31,7 @@ info() { printf '%s\n' "    $*"; }
 ok()   { printf '%s\n' "    ${G}OK${X}  $*"; }
 warn() { printf '%s\n' "    ${Y}!!${X}  $*"; }
 die()  { printf '%s\n' "${R}error:${X} $*" >&2; exit 1; }
+fail() { printf '%s\n' "${R}error:${X} $*" >&2; exit 2; }   # verify failed
 
 YES=0 SKIP_OWL=0 VERIFY_ONLY=0
 while [ $# -gt 0 ]; do
@@ -44,13 +45,15 @@ while [ $# -gt 0 ]; do
 done
 YESFLAG=""; [ "$YES" -eq 1 ] && YESFLAG="--yes"
 
+for dep in curl git; do command -v "$dep" >/dev/null 2>&1 || die "missing dependency: $dep"; done
+
 GATEWAY_REPO="https://github.com/marktantongco/unified-freebuff-proxy.git"
 GATEWAY_DIR="$HOME/workspace/freebuff-unified"
 if [ -d /home/x3/freebuff-unified/.git ]; then GATEWAY_DIR="/home/x3/freebuff-unified"; fi
 
 probe() { # path expect [bearer]
   local code
-  code=$(curl -s -o /dev/null -w "%{http_code}" -m 10 ${3:+-H "Authorization: Bearer $3"} "http://127.0.0.1:18080$1" || echo 000)
+  code=$(curl -s -o /dev/null -w "%{http_code}" -m 10 ${3:+-H "Authorization: Bearer $3"} "http://127.0.0.1:18080$1" 2>/dev/null) || code=000
   [ "$code" = "$2" ] && ok "$1 -> $code" || { warn "$1 -> $code (want $2)"; return 1; }
 }
 
@@ -90,7 +93,9 @@ fi
 # ----------------------------------------------------------------- 3. verify
 step "3/3 verify all doors"
 fails=0
-KEY="$(grep -o 'fbu_[a-z0-9]*' "$GATEWAY_DIR/config.yaml" 2>/dev/null | head -n 1)"
+KEY="$(grep -oE 'fbu_[A-Za-z0-9_]+' "$GATEWAY_DIR/config.yaml" 2>/dev/null | head -n 1 || true)"
+[ -n "$KEY" ] || warn "no fbu_ key found in $GATEWAY_DIR/config.yaml — authed probes will 401"
+case "$KEY" in fbu_CHANGE_ME*|fbu_change_me*) warn "config.yaml still has CHANGE_ME placeholder key";; esac
 probe /healthz 200 || fails=$((fails+1))
 probe /readyz 200 || fails=$((fails+1))
 probe /health/all 200 || fails=$((fails+1))
@@ -98,10 +103,10 @@ probe /v1/models 200 "${KEY:-}" || fails=$((fails+1))
 probe /v1/lmarena/evals 200 "${KEY:-}" || fails=$((fails+1))
 probe /v1/lmarena/leaderboard 200 "${KEY:-}" || fails=$((fails+1))
 if [ "$SKIP_OWL" -eq 0 ]; then
-  code=$(curl -s -o /dev/null -w "%{http_code}" -m 8 http://127.0.0.1:60000/health || echo 000)
+  code=$(curl -s -o /dev/null -w "%{http_code}" -m 8 http://127.0.0.1:60000/health 2>/dev/null) || code=000
   [ "$code" = "200" ] && ok "/owl :60000/health -> $code" || { warn "owl :60000 -> $code"; fails=$((fails+1)); }
 fi
-[ "$fails" -eq 0 ] && ok "stack verified" || die "stack verify: $fails failed (exit 2)"
+if [ "$fails" -eq 0 ]; then ok "stack verified"; else fail "stack verify: $fails failed"; fi
 
 step "opencode provider block (paste into ~/.config/opencode/opencode.json)"
 cat <<EOF
