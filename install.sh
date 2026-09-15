@@ -118,6 +118,8 @@ if [ "$SKIP_OWL" -eq 0 ]; then
   code=$(curl -s -o /dev/null -w "%{http_code}" -m 8 http://127.0.0.1:60000/health 2>/dev/null) || code=000
   [ "$code" = "200" ] && ok "/owl :60000/health -> $code" || { warn "owl :60000 -> $code"; fails=$((fails+1)); }
 fi
+code=$(curl -s -o /dev/null -w "%{http_code}" -m 5 http://127.0.0.1:18090/semcache/healthz 2>/dev/null) || code=000
+[ "$code" = "200" ] && ok "semcache :18090 -> 200" || info "semcache :18090 not running (optional: sidecars/semcache/README.md)"
 if [ "$fails" -eq 0 ]; then ok "stack verified"; else fail "stack verify: $fails failed"; fi
 
 step "opencode provider block (paste into ~/.config/opencode/opencode.json)"

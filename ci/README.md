@@ -11,3 +11,4 @@ Run the same gates locally:
     bash -n install.sh && shellcheck -S warning install.sh
     ./install.sh --verify-only --skip-owl; test $? -eq 2
     scripts/gen-status.py --check
+    python3 -m unittest discover -s sidecars/semcache/tests

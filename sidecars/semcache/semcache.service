@@ -1,0 +1,20 @@
+[Unit]
+Description=semcache — semantic response cache in front of freebuff-unified (:18090)
+After=network-online.target freebuff-unified.service ollama.service
+Wants=freebuff-unified.service
+
+[Service]
+Type=simple
+Environment=SEMCACHE_PORT=18090
+Environment=SEMCACHE_UPSTREAM=http://127.0.0.1:18080
+Environment=SEMCACHE_OLLAMA=http://127.0.0.1:11434
+Environment=SEMCACHE_THRESHOLD=0.95
+ExecStart=/usr/bin/python3 %h/workspace/ai-stack/sidecars/semcache/semcache.py
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=%h/.local/share/semcache
+
+[Install]
+WantedBy=default.target

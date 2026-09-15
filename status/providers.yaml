@@ -184,6 +184,12 @@
   source: manual
   probe: owl-agent metrics
 - kind: infra
+  name: semcache sidecar :18090
+  state: unknown
+  detail: semantic cache (sidecars/semcache) — enable with systemctl --user; optional
+  last_verified: 2026-09-15T00:00:00Z
+  source: manual
+- kind: infra
   name: AutoClaw proxy :31000
   state: wallet
   detail: active, 6 models, 0 accounts (needs Z.ai email:password batch login)

@@ -53,6 +53,7 @@ flowchart TB
 | Port | Name | Job |
 |------|------|-----|
 | `:18080` | Gateway | 🟢 **front door** — chat, evals, leaderboard, health |
+| `:18090` | semcache | 🧠 semantic response cache in front of the gateway (optional sidecar) |
 | `:9091` | Dashboard | 🖥️ control room UI + SSE |
 | `:3101` | Hermes | 🥷 stealth TLS fingerprints + SOCKS5 pool |
 | `:3103` | LMArena | ⚔️ arena session relay |
@@ -201,6 +202,13 @@ gateway repo (`docs/`, `scripts/`). CI runs build, vet, `go test -race`
   ([repo](https://github.com/marktantongco/unified-owl))
 - **Token cloud** — Centralized `chmod 600` key store, each key
   live-validated. See `provider-status.md` for the full 143-key report.
+
+## Gap-closing components in this repo
+
+| Path | Closes | State |
+|---|---|---|
+| `sidecars/semcache/` | semantic cache (Bifrost/LiteLLM class) — fewer calls to 429-prone free providers | ✅ runnable, 13 tests |
+| `gateway-patches/plugin-seam/` | Bifrost-style Pre/Post plugin chain for the Go gateway + `ledger` (per-key spend/budget) plugin | 📦 ready to copy into `unified-freebuff-proxy` (see its README) |
 
 ## Security notes
 

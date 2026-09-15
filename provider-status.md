@@ -35,6 +35,7 @@
 | infra | **lmarena sidecar :3103** | ✅ LIVE | arena sessions + eval relay | `2026-09-04T00:00:00Z` | manual |
 | infra | **owl-agent :60000** | ✅ LIVE | proxy defense, chameleon fingerprints, MCP fetch | `2026-09-04T00:00:00Z` | manual |
 | infra | **owl metrics :9101** | ✅ LIVE | Prometheus, 55 proxies | `2026-09-04T00:00:00Z` | manual |
+| infra | **semcache sidecar :18090** | ❔ UNKNOWN | semantic cache (sidecars/semcache) — enable with systemctl --user; optional | `2026-09-15T00:00:00Z` | manual |
 | infra | **AutoClaw proxy :31000** | ⚠️ WALLET-GATED | active, 6 models, 0 accounts (needs Z.ai email:password batch login) | `2026-09-04T00:00:00Z` | manual |
 | infra | **GitHub Pages** | ✅ LIVE | marktantongco.github.io/ai-stack — build status "built" | `2026-09-15T00:00:00Z` | manual |
 | infra | **Vercel** | ⚠️ WALLET-GATED | 302 SSO-gated — disable Deployment Protection for a public URL | `2026-09-04T00:00:00Z` | manual |
@@ -50,6 +51,6 @@
 | ✅ LIVE | 15 |
 | ⚠️ WALLET-GATED | 9 |
 | ❌ BLOCKED | 9 |
-| ❔ UNKNOWN | 1 |
+| ❔ UNKNOWN | 2 |
 
 Rows whose **Source** is `gateway /health/all` are refreshed on every run; the rest are curated facts (wallet balances, account blocks) that no probe can see.

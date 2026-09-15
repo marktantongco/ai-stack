@@ -14,3 +14,5 @@ jobs:
           test "$rc" -eq 2 || { echo "expected exit 2, got $rc"; exit 1; }
       - name: status files are generated, not hand-edited
         run: scripts/gen-status.py --check
+      - name: semcache sidecar tests
+        run: python3 -W ignore -m unittest discover -s sidecars/semcache/tests
