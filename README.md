@@ -208,7 +208,7 @@ gateway repo (`docs/`, `scripts/`). CI runs build, vet, `go test -race`
 | Path | Closes | State |
 |---|---|---|
 | `sidecars/semcache/` | semantic cache (Bifrost/LiteLLM class) — fewer calls to 429-prone free providers | ✅ runnable, 13 tests |
-| `gateway-patches/plugin-seam/` | Bifrost-style Pre/Post plugin chain for the Go gateway + `ledger` (per-key spend/budget) plugin | 📦 ready to copy into `unified-freebuff-proxy` (see its README) |
+| `gateway-patches/plugin-seam/` | Bifrost-style Pre/Post plugin chain for the Go gateway + `ledger` (per-key spend/budget) + `keypool` (per-provider key rotation on 429/402) plugins + fiber adapter | 📦 ready to copy into `unified-freebuff-proxy` (see its README) |
 
 ## Security notes
 

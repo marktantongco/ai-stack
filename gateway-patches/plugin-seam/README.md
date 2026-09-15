@@ -41,7 +41,32 @@ is < 150 lines and its tests are table-driven.
 | `ledger` | FinOps — per-key/model tokens + USD, daily budget gate (402) | ✅ in this dir |
 | `semcache` | Cost/latency — semantic cache | ✅ shipped as a **sidecar** (`sidecars/semcache/`) today; becomes a PreHook short-circuit once the seam is in |
 | `eval` | move `lmarena_eval.go` sealed-store behind a PostHook | planned — pure refactor |
-| `keypool` | Reliability — rotate keys within a provider on 429/402 before demoting the provider | planned — needs `credentials` package access |
+| `keypool` | Reliability — LRU key rotation per provider; 429 → cool that key (Retry-After or doubling backoff); 401/402/403 → park 6h; whole pool cooling → honest 429 + Retry-After with `AllowFallbacks=true` so the failover daemon can swap provider | ✅ in this dir, 7 tests |
+
+## Wiring keypool to the token cloud
+
+`ProviderKeys` is filled by the wiring code from `~/.env-tokens/` (chmod 600), grouped
+by the model-id prefix (`groq/…`, `mistral/…`). The chosen secret lands in
+`req.Meta["upstream_key"]`; the existing upstream client reads it from there instead
+of the single `credentials.Store` credential. `/plugins/keypool/status` exposes
+per-provider `live | degraded | exhausted | wallet` — `gen-status.py` can consume it
+directly, replacing the hand-maintained wallet rows in `status/providers.yaml`.
+
+## How to land this in unified-freebuff-proxy
+
+The Arena sandbox has no push access to that repo (`permissions.push=false`) and no
+Go toolchain (go.dev / dl.google.com / release-assets egress blocked), so this is a
+patch bundle, not a PR:
+
+```
+cd unified-freebuff-proxy
+cp -r ../ai-stack/gateway-patches/plugin-seam/internal/plugin internal/
+go vet ./internal/plugin/... && go test -race ./internal/plugin/...
+# then the 3 wiring edits above
+```
+
+Reviewed by hand for compile blockers (imports, brace balance, unused vars); the
+first `go test` run there is the real acceptance step.
 
 ## Test
 

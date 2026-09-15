@@ -100,8 +100,9 @@ func (l *Ledger) PostHook(_ context.Context, r *plugin.Request, p *plugin.Respon
 	t.Compl += row.Compl
 	t.USD += usd
 	b, _ := json.Marshal(row)
-	l.w.Write(b)
-	l.w.WriteByte('\n')
+	if _, err := l.w.Write(append(b, '\n')); err != nil {
+		return p, err // logged by the chain, never fatal
+	}
 	return p, nil
 }
 
