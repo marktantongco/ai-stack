@@ -178,7 +178,7 @@ scripts/operations/secret-audit.sh  # env diff vs backups
 scripts/operations/runbook.sh list  # 6 incident runbooks
 ```
 
-This repo's own CI (`.github/workflows/ci.yml`) lints `install.sh`, asserts the
+This repo's own CI (`ci/github-workflow-ci.yml` — move to `.github/workflows/`, see `ci/README.md`) lints `install.sh`, asserts the
 `--verify-only` failure path exits 2, and fails on stale status files.
 `install.sh` pins the gateway to a commit (`AI_STACK_GATEWAY_REF` to override)
 and honours `AI_STACK_GATEWAY_DIR`.
