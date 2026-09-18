@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Stack — Live Provider Status</title>
+<meta name="description" content="Freebuff AI agent stack: live provider inference status, token cloud, and infrastructure health.">
+<style>body{font-family:system-ui,sans-serif;max-width:800px;margin:3rem auto;padding:0 1rem;line-height:1.6}code{background:#f1f1f1;padding:.1rem .3rem;border-radius:4px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:.4rem .6rem;text-align:left}th{background:#333;color:#fff}.ok{color:#2ea043;font-weight:bold}.warn{color:#d29922;font-weight:bold}.err{color:#da3633;font-weight:bold}</style>
+</head>
+<body>
+<p><a href="index.html">← Back to AI Stack</a></p>
+<aside style="padding:1rem;border:1px solid #aaa;background:#fff9df"><strong>Historical snapshot</strong><br>This page preserves the repository’s previous status page as inspected on September 18, 2026. Its provider and infrastructure claims are not live checks and have not been independently verified.</aside>
+<h1>AI Stack — Live Provider Status</h1>
+<p>Self-hosted, privacy-first <strong>local AI agent infrastructure</strong> with multi-provider inference. <span class="ok">● 7 providers live</span></p>
+
+<h2>✅ Live Inference</h2>
+<table>
+<tr><th>Provider</th><th>Status</th><th>Models</th></tr>
+<tr><td>Cloudflare Workers AI</td><td class="ok">LIVE</td><td>llama-3.1-fast, llama-3.2-3b, llama-3.2-1b, llama-4-scout, mistral-small-3.1</td></tr>
+<tr><td>OpenRouter</td><td class="ok">LIVE</td><td>359+ models</td></tr>
+<tr><td>Fireworks</td><td class="ok">LIVE</td><td>deepseek-v4-flash + 18</td></tr>
+<tr><td>Google Gemini</td><td class="ok">LIVE</td><td>gemini-2.5-flash + 37</td></tr>
+<tr><td>Cohere</td><td class="ok">LIVE</td><td>command-a-03-2025 + 7</td></tr>
+<tr><td>Groq Direct</td><td class="ok">LIVE</td><td>16 models</td></tr>
+<tr><td>Local Ollama</td><td class="ok">LIVE</td><td>qwen2.5:3b, gemma4:e2b, deepseek-r1:1.5b</td></tr>
+</table>
+
+<h2>⚠️ Wallet-Gated (Valid Keys, Need Credits)</h2>
+<p>Together, DeepSeek ×4, Cerebras, OpenAI, Venice, xAI, ZenMux — 9 providers with valid keys but empty wallets.</p>
+
+<h2>❌ Permanently Blocked</h2>
+<p>NVIDIA (404/410), Mistral (429 rate limit).</p>
+
+<h2>Infrastructure</h2>
+<table>
+<tr><th>Component</th><th>Address</th><th>Status</th></tr>
+<tr><td>Freebuff gateway</td><td><code>:18080</code></td><td class="ok">active</td></tr>
+<tr><td>AutoClaw proxy</td><td><code>:31000</code></td><td class="ok">active (0 accounts)</td></tr>
+<tr><td>GitHub Pages</td><td><code>marktantongco.github.io/ai-stack</code></td><td class="ok">200</td></tr>
+<tr><td>Vercel</td><td><code>vercel.app</code></td><td class="warn">302 (SSO gated)</td></tr>
+<tr><td>Token cloud</td><td><code>~/.env-tokens/</code></td><td class="ok">143 keys v3.7</td></tr>
+</table>
+
+<h2>Quickstart</h2>
+<pre><code># Login to unlock GLM-5.2 in opencode
+opencode run --model autoclaw/glm-5.2 "hello"</code></pre>
+<p>Full docs: <a href="https://github.com/marktantongco/ai-stack">README.md</a> | <a href="provider-status.md">Provider Status</a></p>
+</body>
+</html>
